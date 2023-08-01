@@ -1,0 +1,32 @@
+[
+  {
+      "model": "talktherapyapi.review",
+      "pk": 1,
+      "fields": {
+          "therapist_id": 1,
+          "user_id": 1,
+          "content": "This is a review",
+          "created_on": "2023-07-31"
+      }
+  },
+  {
+      "model": "levelupapi.review",
+      "pk": 2,
+      "fields": {
+        "therapist_id": 2,
+        "user_id": 2,
+        "content": "This is a review also",
+        "created_on": "2023-06-27"
+    }
+  },
+  {
+      "model": "levelupapi.review",
+      "pk": 3,
+      "fields": {
+        "therapist_id": 2,
+        "user_id": 3,
+        "content": "Another review",
+        "created_on": "2023-07-15"
+    }
+  }
+]
