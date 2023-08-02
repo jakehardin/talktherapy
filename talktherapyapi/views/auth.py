@@ -1,6 +1,6 @@
+from talktherapyapi.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from talktherapyapi.models import User
 from datetime import datetime
 
 @api_view(['POST'])
