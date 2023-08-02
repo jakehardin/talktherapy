@@ -1,5 +1,4 @@
 """View module for handling requests about game types"""
-from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
@@ -28,12 +27,12 @@ class TherapistView(ViewSet):
     def create(self, request):
         """DOCSTRING
         """
-        category = Category.objects.get(pk=request.data["categoryId"])
+        category_id = Category.objects.get(id=request.data["category_id"])
 
         therapist = Therapist.objects.create(
             first_name=request.data["first_name"],
             last_name=request.data["last_name"],
-            category_id=category,
+            category_id=category_id,
             created_on=request.data["created_on"],
             profile_image_url=request.data["profile_image_url"],
             description=request.data["description"],
@@ -50,18 +49,26 @@ class TherapistView(ViewSet):
         """DOCSTRING
         """
 
-        product = Product.objects.get(pk=pk)
-        product.name = request.data["name"]
-        product.price = request.data["price"]
-        product.image = request.data["image"]
+        therapist = Therapist.objects.get(pk=pk)
+        therapist.first_name = request.data["first_name"]
+        therapist.last_name = request.data["last_name"]
+        therapist.profile_image_url = request.data["profile_image_url"]
+        therapist.description = request.data["description"]
+        therapist.website = request.data["website"]
+        therapist.contact = request.data["contact"]
+        therapist.favorite = request.data["favorite"]
+        therapist.city = request.data["city"]
+        therapist.state = request.data["state"]
 
-        product.save()
+        therapist.save()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
     def destroy(self, request, pk):
-        product = Product.objects.get(pk=pk)
-        product.delete()
+        """DOCTSTRING
+        """
+        therapist = Therapist.objects.get(pk=pk)
+        therapist.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 class TherapistSerializer(serializers.ModelSerializer):
@@ -69,4 +76,9 @@ class TherapistSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Therapist
-        fields = ('id', 'first_name', 'last_name', 'category_id', 'created_on', 'profile_image_url', 'description', 'website', 'contact', 'favorite', 'city', 'state' )
+        fields = ('id', 'first_name',
+                  'last_name', 'category_id',
+                  'created_on', 'profile_image_url',
+                  'description', 'website', 'contact',
+                  'favorite', 'city', 'state' )
+        

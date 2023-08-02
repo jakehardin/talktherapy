@@ -1,0 +1,10 @@
+[
+  {
+      "model": "talktherapyapi.category",
+      "pk": 1,
+      "fields": {
+          "label": "Depression",
+          "description": "this is depressing"
+      }
+  }
+]
