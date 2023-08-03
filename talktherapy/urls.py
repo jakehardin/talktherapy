@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from rest_framework import routers
-from talktherapyapi.views import TherapistView, register_user, check_user
+from talktherapyapi.views import TherapistView, register_user, check_user, ReviewView
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'therapists', TherapistView, 'therapist')
+router.register(r'reviews', ReviewView, 'review')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
