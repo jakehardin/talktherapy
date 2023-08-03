@@ -70,6 +70,28 @@ class TherapistView(ViewSet):
         therapist = Therapist.objects.get(pk=pk)
         therapist.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
+    
+    def search(self, request):
+        """Search therapists by first name, last name, city, or state, """
+        
+        first_name = request.query_params.get('first_name', None)
+        last_name = request.query_params.get('last_name', None)
+        city = request.query_params.get('city', None)
+        state = request.query_params.get('state', None)
+        
+        therapists = Therapist.objects.all()
+        
+        if first_name:
+            therapists = therapists.filter(first_name__icontains=first_name)
+        if last_name:
+            therapists = therapists.filter(last_name__icontains=last_name)
+        if city:
+            therapists = therapists.filter(city__icontains=city)
+        if state:
+            therapists = therapists.filter(state__icontains=state)
+        
+        serializer = TherapistSerializer(therapists, many=True)
+        return Response(serializer.data)
 
 class TherapistSerializer(serializers.ModelSerializer):
     """JSON serializer for game types
