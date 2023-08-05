@@ -68,6 +68,9 @@ class TherapistView(ViewSet):
         therapist.favorite = request.data["favorite"]
         therapist.city = request.data["city"]
         therapist.state = request.data["state"]
+        
+        category_id = Category.objects.get(pk=request.data["category_id"])
+        therapist.category_id = category_id
 
         therapist.save()
 
