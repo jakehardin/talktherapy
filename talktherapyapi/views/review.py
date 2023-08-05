@@ -21,6 +21,11 @@ class ReviewView(ViewSet):
         """DOCSTRING
         """
         reviews = Review.objects.all()
+
+        therapist_id = request.query_params.get('therapist_id', None)
+        if therapist_id is not None:
+            reviews = reviews.filter(therapist_id_id=therapist_id)
+
         serializer = ReviewSerializer(reviews, many=True)
         return Response(serializer.data)
 

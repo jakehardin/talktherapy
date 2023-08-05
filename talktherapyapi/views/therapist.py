@@ -21,6 +21,15 @@ class TherapistView(ViewSet):
         """DOCSTRING
         """
         therapists = Therapist.objects.all()
+
+        category_id = request.query_params.get('category_id', None)
+        if category_id is not None:
+            therapists = therapists.filter(category_id_id=category_id)
+
+        favorite = request.query_params.get('favorite', False)
+        if favorite is not False:
+            therapists = therapists.filter(favorite=True)
+
         serializer = TherapistSerializer(therapists, many=True)
         return Response(serializer.data)
 
@@ -59,6 +68,9 @@ class TherapistView(ViewSet):
         therapist.favorite = request.data["favorite"]
         therapist.city = request.data["city"]
         therapist.state = request.data["state"]
+        
+        category_id = Category.objects.get(pk=request.data["category_id"])
+        therapist.category_id = category_id
 
         therapist.save()
 
@@ -70,17 +82,17 @@ class TherapistView(ViewSet):
         therapist = Therapist.objects.get(pk=pk)
         therapist.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
-    
+
     def search(self, request):
         """Search therapists by first name, last name, city, or state, """
-        
+
         first_name = request.query_params.get('first_name', None)
         last_name = request.query_params.get('last_name', None)
         city = request.query_params.get('city', None)
         state = request.query_params.get('state', None)
-        
+
         therapists = Therapist.objects.all()
-        
+
         if first_name:
             therapists = therapists.filter(first_name__icontains=first_name)
         if last_name:
@@ -89,7 +101,7 @@ class TherapistView(ViewSet):
             therapists = therapists.filter(city__icontains=city)
         if state:
             therapists = therapists.filter(state__icontains=state)
-        
+
         serializer = TherapistSerializer(therapists, many=True)
         return Response(serializer.data)
 
