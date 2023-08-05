@@ -32,4 +32,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('register', register_user),
     path('checkuser', check_user),
+    path('therapists/search/', TherapistView.as_view({'get': 'search'}), name='therapist-search'),
 ]
