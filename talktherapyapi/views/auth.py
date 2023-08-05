@@ -1,7 +1,7 @@
-from talktherapyapi.models import User
+# from datetime import datetime
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from datetime import datetime
+from talktherapyapi.models import User
 
 @api_view(['POST'])
 def check_user(request):
