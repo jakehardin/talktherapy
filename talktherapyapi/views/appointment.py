@@ -34,14 +34,15 @@ class AppointmentView(ViewSet):
             Response -- JSON serialized Appointment
         """
 
-        category_id = Category.objects.get(pk=request.data["category_id"])
-        therapist = Therapist.objects.get(id=request.data["therapist_id"])
+        category = Category.objects.get(pk=request.data["category_id"])
+        therapist = Therapist.objects.get(pk=request.data["therapist_id"])
         patient = User.objects.get(pk=request.data["user"])
+
 
         appointment = Appointment.objects.create(
             user=patient,
             therapist_id=therapist,
-            category_id=category_id,
+            category_id=category,
             service=request.data["service"],
             day=request.data["day"],
             time=request.data["time"],
@@ -58,17 +59,16 @@ class AppointmentView(ViewSet):
         """
     
         appointment = Appointment.objects.get(pk=pk)
-        appointment.service = request.data["service"]
-        appointment.day = request.data["day"]
-        appointment.time = request.data["time"]
-        appointment.time_ordered = request.data["time_ordered"]
-        
         category_id = Category.objects.get(pk=request.data["category_id"])
         appointment.category_id = category_id
         therapist_id = Therapist.objects.get(pk=request.data["therapist_id"])
         appointment.therapist_id = therapist_id
-        user = User.objects.get(pk=request.data["first_name"])
+        user = User.objects.get(pk=request.data["user"])
         appointment.user = user
+        appointment.service = request.data["service"]
+        appointment.day = request.data["day"]
+        appointment.time = request.data["time"]
+        appointment.time_ordered = request.data["time_ordered"]
         
         appointment.save()
         
