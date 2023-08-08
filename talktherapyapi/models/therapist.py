@@ -1,5 +1,6 @@
 from django.db import models
 from .category import Category
+from .user import User
 
 class Therapist(models.Model):
     """Model that represents a therapist"""
@@ -14,3 +15,4 @@ class Therapist(models.Model):
     favorite = models.BooleanField()
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
+    uid = models.ForeignKey(User, on_delete=models.CASCADE, related_name="therapist_name")
