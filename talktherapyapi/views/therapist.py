@@ -2,7 +2,7 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from talktherapyapi.models import Therapist, Category
+from talktherapyapi.models import Therapist, Category, User
 
 
 class TherapistView(ViewSet):
@@ -22,6 +22,10 @@ class TherapistView(ViewSet):
         """
         therapists = Therapist.objects.all()
 
+        uid = request.query_params.get('uid', None)
+        if uid is not None:
+            therapists = therapists.filter(uid=uid)
+
         category_id = request.query_params.get('category_id', None)
         if category_id is not None:
             therapists = therapists.filter(category_id_id=category_id)
@@ -36,6 +40,7 @@ class TherapistView(ViewSet):
     def create(self, request):
         """DOCSTRING
         """
+        uid = User.objects.get(uid=request.data["uid"])
         category_id = Category.objects.get(id=request.data["category_id"])
 
         therapist = Therapist.objects.create(
@@ -50,6 +55,7 @@ class TherapistView(ViewSet):
             favorite=request.data["favorite"],
             city=request.data["city"],
             state=request.data["state"],
+            uid=uid
         )
         serializer = TherapistSerializer(therapist)
         return Response(serializer.data)
@@ -68,7 +74,7 @@ class TherapistView(ViewSet):
         therapist.favorite = request.data["favorite"]
         therapist.city = request.data["city"]
         therapist.state = request.data["state"]
-        
+
         category_id = Category.objects.get(pk=request.data["category_id"])
         therapist.category_id = category_id
 
@@ -114,5 +120,5 @@ class TherapistSerializer(serializers.ModelSerializer):
                   'last_name', 'category_id',
                   'created_on', 'profile_image_url',
                   'description', 'website', 'contact',
-                  'favorite', 'city', 'state' )
+                  'favorite', 'city', 'state', 'uid' )
         
