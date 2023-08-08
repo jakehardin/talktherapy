@@ -32,8 +32,8 @@ class ReviewView(ViewSet):
     def create(self, request):
         """DOCSTRING
         """
-        therapist = Therapist.objects.get(id=request.data["therapist_id"])
-        reviewer = User.objects.get(id=request.data["reviewer_id"])
+        therapist = Therapist.objects.get(pk=request.data["therapist_id"])
+        reviewer = User.objects.get(pk=request.data["reviewer_id"])
 
         review = Review.objects.create(
             therapist_id=therapist,
